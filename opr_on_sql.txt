@@ -1,0 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package employee;
+
+import java.sql.ResultSet;
+ import java.sql.SQLException;
+
+
+/**
+ *
+ * @author sanke
+ */
+public class EmployeeDAO 
+{
+    public static void insertMovie(String name) throws SQLException, ClassNotFoundException
+    {
+       String sql = "insert into Database.Movies values('"+name+"')";
+       try
+       {
+            mysqlConnect.DBExecuteQuery(sql);
+       }
+       catch(SQLException e)
+       {
+           System.out.println("Error while inserting data"+e);
+           e.printStackTrace();
+           throw e;
+       }
+    }
+    
+    
+    public static void deleteMovie(String name) throws SQLException, ClassNotFoundException
+    {
+       String sql = "delete from Databse.Movies where Name = '"+name+"'";
+       try
+       {
+            mysqlConnect.DBExecuteQuery(sql);
+       }
+       catch(SQLException e)
+       {
+           System.out.println("Error while updating data"+e);
+           e.printStackTrace();
+           throw e;
+       }
+    }
+    
+    public static void getAllMovies() throws ClassNotFoundException, SQLException
+    {
+        String sql = "select * from Database.Movies";
+        
+        try
+        {
+            mysqlConnect.DBExecute(sql);
+            
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error while fetching the data"+e);
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+}     

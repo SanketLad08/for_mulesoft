@@ -1,0 +1,90 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package employee;
+
+import com.sun.rowset.CachedRowSetImpl;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/**
+ *
+ * @author sanke
+ */
+public class mysqlConnect 
+{
+       private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+       
+       private static Connection conn = null;
+       
+       private static final String connStr = "jdbc:mysql://localhost:3306/Database?zeroDateTimeBehavior=convertToNull";
+       
+       public static void DBConnect() throws SQLException, ClassNotFoundException
+       {
+            try
+            {
+                Class.forName(JDBC_DRIVER);
+            }
+            catch(ClassNotFoundException e)
+            {
+                System.out.println("MYSQL DRIVER NOT FOUNF!!!");
+                e.printStackTrace();
+                throw e; 
+            }
+            System.out.println("JDBC Driver Registered!");
+            
+            try
+            {
+                conn = DriverManager.getConnection(connStr, "root", "Sank@260408");
+            }
+            catch(SQLException e)
+            {
+                System.out.println("Connection Failed!!");
+                throw e;
+            }
+       }
+       public static void DBDisconnect() throws SQLException
+       {    
+            try
+            {
+                if(conn != null && !conn.isClosed())
+                {
+                    conn.close();
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+       }
+       
+       public static void DBExecuteQuery(String sqlStmt) throws SQLException, ClassNotFoundException
+       {
+           Statement stmt = null;
+           try
+           {
+               DBConnect();
+               stmt = conn.createStatement();
+               stmt.executeUpdate(sqlStmt);
+           }
+           catch(SQLException e)
+           {
+               System.out.println("Problem occured at DBExecuteQuery qperation!!"+e);
+               throw e;
+           }
+           finally
+           {
+               if(stmt!=null)
+               {
+                   stmt.close();
+               }
+               DBDisconnect();
+           }
+       }
+       
+}
